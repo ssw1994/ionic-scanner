@@ -1,0 +1,18 @@
+    <ion-view title="list">
+        <ion-content padding='true'>
+            <table class="table">
+                <thead class="list-head">
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Bar Codes</th>
+                </thead>
+                <tbody class="list-body">
+                    <tr ng-repeat="item in list" ng-click="gotoScannerState(item)">
+                        <td>{{item.product}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.refcode.join()}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ion-content>
+    </ion-view>

@@ -1,0 +1,23 @@
+<ion-view title="scan">
+    <ion-content style="text-align:center;">
+      <ion-header>
+        <ion-navbar>
+          <ion-title>Scan Codes</ion-title>
+        </ion-navbar>
+      <!-- <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+        <lable class="lbl-scan">Scanned Codes</lable>
+      </div> -->
+      <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom:10px;">
+        <!-- <input type="text" ng-model="scannedcodes" style="border:1px solid grey;width:100%;"> -->
+        <textarea class="scan-area" ng-model="scannedcodes"></textarea>
+      </div>  
+       <div style="text-align: center;">
+          <button class="btn btn-success" ng-click="saveBarcodes(scannedcodes)">submit</button>
+      </div>
+      </ion-content>
+      <div class = "bar bar-footer" >
+        <div style="width:100%;text-align: center !important;">
+            <button class="btn btn-primary" ion-button round outline ng-click="scanBarcode()">Scan <ion-icon name="qr-scanner"></ion-icon>            </button>
+        </div>
+      </div>
+</ion-view>

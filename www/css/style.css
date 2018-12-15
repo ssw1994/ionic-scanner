@@ -1,0 +1,28 @@
+/* Empty. Add your own CSS if you like */
+.scan-btn {
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    right: 0;
+}
+
+.list-head th,.list-body tr{
+    text-align: center;
+}
+.list-body tr{
+    cursor: pointer;
+}
+.btn-submit{
+    color:white;
+    font-weight:bold;
+}
+.lbl-scan{
+    font-size:14px;
+    font-weight: bold;
+}
+.scan-area{
+    margin-top:5% !important;
+    width: 100%;
+    border:1px solid gray;
+    height:100px;
+}

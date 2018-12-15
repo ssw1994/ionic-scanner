@@ -1,0 +1,31 @@
+[
+    {
+        "product":"Scanner",
+        "quantity":10,
+        "productId":1,
+        "refcode":[23214,545436]
+    },
+    {
+        "productId":2,
+        "product":"Mouse",
+        "quantity":17,
+        "refcode":[6436456,7657657]
+    },
+    {
+        "productId":3,
+        "product":"Monitor",
+        "quantity":15,
+        "refcode":[6756765,87876854]
+    },{
+        "productId":4,
+        "product":"HDD",
+        "quantity":12,
+        "refcode":[3423545,654765763]
+    },
+    {
+        "productId":5,
+        "product":"Scanner",
+        "quantity":119,
+        "refcode":[443653,645623]
+    }
+]
