@@ -1,0 +1,32 @@
+<ion-view>
+  <ion-content>
+    <ion-header>
+      <ion-navbar>
+        <ion-title>Chat</ion-title>
+      </ion-navbar>
+      <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom:10px;">
+        <table clas="table table-bordered">
+          <thead>
+              <tr>
+                <th>Created On</th>
+                <th>Number</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Type</th>
+                <th>Text</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="message in messages">
+              <td>{{message.creation_date}}</td>
+              <td>{{message.number}}</td>
+              <td>{{message.from}}</td>
+              <td>{{message.to}}</td>
+              <td>{{message.type}}</td>
+              <td>{{message.text}}</td>
+            </tr>
+          </tbody> 
+        </table>
+      </div>
+  </ion-content>
+</ion-view>
