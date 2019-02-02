@@ -25,6 +25,46 @@ app.run(function($ionicPlatform) {
   });
 });
 
+app.controller("whatsapp",function($scope,$state,$stateParams,$http){
+
+
+  $scope.mobileNumber = 919403483605;
+  $scope.API_KEY = "5O45OYKJKMXX0LANU0BV";
+  $scope.API_END_POINT = "http://panel.apiwha.com/get_messages.php?apikey="+$scope.API_KEY+"&number="+$scope.mobileNumber;
+  $scope.messages = [];
+  /** 
+   * @author SSW
+   * @description this function is used on initialization of component
+  */
+  $scope.init = function(){
+    try{
+      $scope.getMessage();
+    }catch(error){
+      console.error(error);
+    }
+  }
+
+  /** 
+   * @author SSW
+   * @description this function is used for getting whatsapp message
+  */
+  $scope.getMessage = function(){
+    try{
+      $http.get($scope.API_END_POINT).then(function(res){
+        if(res){
+          console.log(res);
+          $scope.messages = res;
+        }
+      });
+    }catch(error){
+      console.error(error);
+    }
+  }
+
+  $scope.init();
+});
+
+
 app.controller("scanner", function($scope, $state,$stateParams,$http, $cordovaBarcodeScanner) {
   $scope.codes = [];
   $scope.scannedcodes = "";
@@ -99,9 +139,7 @@ app.controller("listCtrl",function($scope,$http,$state){
   $scope.gotoScannerState = function(iObj){
     $state.go("scan",{param:{id:iObj.productId}});
   }
-
   $scope.init();
-
 })
 
 /*(function(){
@@ -200,10 +238,19 @@ app.config(function($stateProvider,$urlRouterProvider) {
     controller:"scanner"
   }
 
+  var whatsappState = {
+    name:'whatsapp',
+    url:'/whatsapp',
+    templateUrl:"./template/whatsappview.html",
+    controller:"whatsapp"
+  }
+
   $stateProvider.state(listState);
   $stateProvider.state(scannerState);
+  $stateProvider.state(whatsappState);
 
-  $urlRouterProvider.otherwise('/list');
+
+  $urlRouterProvider.otherwise('/whatsapp');
 
 })
 
