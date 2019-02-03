@@ -1,20 +1,36 @@
-<ion-view>
+<ion-view title="whatsapp">
   <ion-content>
     <ion-header>
       <ion-navbar>
-        <ion-title>Chat</ion-title>
+        <h3 class="title">{{showAll ? "ALL" : (showChat ? "Chat" : "Settings")}}</h3>
       </ion-navbar>
-      <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom:10px;">
-        <table clas="table table-bordered">
+      <!-- <div class="bar bar-footer footer">
+              <div class = "tabs">
+                  <a class = "tab-item" ng-click="showChat = false ;showAll = true;">
+                     ALL
+                  </a>
+                 
+                  <a class = "tab-item" ng-click="showAll = false;showChat = true;">
+                     Chat
+                  </a>
+               
+                  <a class = "tab-item" ng-click="showSetting = true">
+                     Settings
+                  </a>
+               </div>
+          </div> -->
+
+      <div ng-if="showAll" class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-bottom:10px;">
+        <table class="table table-bordered">
           <thead>
-              <tr>
-                <th>Created On</th>
-                <th>Number</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Type</th>
-                <th>Text</th>
-              </tr>
+            <tr>
+              <th scope="col">Created On</th>
+              <th scope="col">Number</th>
+              <th scope="col">From</th>
+              <th scope="col">To</th>
+              <th scope="col">Type</th>
+              <th scope="col">Message</th>
+            </tr>
           </thead>
           <tbody>
             <tr ng-repeat="message in messages">
@@ -25,8 +41,43 @@
               <td>{{message.type}}</td>
               <td>{{message.text}}</td>
             </tr>
-          </tbody> 
+          </tbody>
         </table>
+      </div>
+      <div class="col-md-12 col-sm-12 col-xs-12 padding0">
+        <div class="row" ng-repeat="msg in messages;">
+          <div class="col-md-12 col-xs-12 col-xs-12">
+            <pre ng-class="{'in-msg':msg.type == 'IN','out-msg':msg.type == 'OUT'}">
+                      {{msg.text}}
+                  </pre>
+          </div>
+
+        </div>
+        <div class="col-xs-12 col-sm-12 col-xs-12">
+          <form name="myForm">
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-12" class="form-group">
+                <input required ng-model="sender.destination_number" class="form-control" style="border:1px solid black;height:38px;">
+              </div>
+              <div class="col-sm-6 col-sm-6 col-xs-12 padding0">
+                <div class="input-group">
+                  <input data-emojiable="true" data-emoji-input="unicode" required type="text" ng-model="sender.message" class="form-control" style="border:1px solid black;height:38px;"
+                    placeholder="Send Message" aria-label="Send Message" aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" ng-click="sendMessage()">SEND</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-2 col-xs-12">
+                <button class="btn btn-outline-secondary" type="button">A</button>
+                <button class="btn btn-outline-secondary" type="button">E</button>
+                <button class="btn btn-outline-secondary" type="button">C</button>
+                <button class="btn btn-outline-secondary" type="button">L</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
       </div>
   </ion-content>
 </ion-view>

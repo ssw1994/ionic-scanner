@@ -25,17 +25,60 @@ app.run(function($ionicPlatform) {
   });
 });
 
-app.controller("whatsapp",function($scope,$state,$stateParams,$http){
+app.controller("whatsapp",["$scope","$state","$stateParams","$http",function($scope,$state,$stateParams,$http){
 
 
   $scope.mobileNumber = 919403483605;
   $scope.API_KEY = "5O45OYKJKMXX0LANU0BV";
-  $scope.API_END_POINT = "http://panel.apiwha.com/get_messages.php?apikey="+$scope.API_KEY+"&number="+$scope.mobileNumber;
+  $scope.API_URL = "http://localhost:3001/notification/"
+  $scope.API_END_POINT = "http://localhost:3001/notification/whatsAppMessages";//https://webhook.site/a03d2a0e-a57a-4625-b675-f830a1c02861/?apikey="+$scope.API_KEY+"&number="+$scope.mobileNumber;
   $scope.messages = [];
+  $scope.showAll = false;
+  $scope.showChat = true;
+  $scope.showSetting = false;
+  $scope.sender = {
+    destination_number:"",
+    message:""
+  }
+  $scope.message = "";
+  $scope.destination_number = "";
   /** 
    * @author SSW
    * @description this function is used on initialization of component
   */
+
+
+  $scope.sendMessage = function(){
+    try{
+      if($scope.sender.message && $scope.sender.destination_number){
+        var param = {
+          API_KEY:$scope.API_KEY,
+          MOBILE_NUMBER:$scope.sender.destination_number,
+          TEXT_MEESAGE:$scope.sender.message
+        }
+        $http.post($scope.API_URL + "send",param,function(error,res){
+          if(error)
+            alert(error);
+          else{
+            console.log(res);
+            if(res.result_code == 0 && res.success){
+              alert("Message sent successfully");
+              $scope.sender = {
+                message:"",
+                destination_number:""
+              }
+            }
+          }
+        });
+      }else{
+        alert("Something missing");
+      }
+      
+    }catch(error){
+      console.error(error);
+    }
+  }
+
   $scope.init = function(){
     try{
       $scope.getMessage();
@@ -44,25 +87,41 @@ app.controller("whatsapp",function($scope,$state,$stateParams,$http){
     }
   }
 
+// var settings = {
+//   "async": true,
+//   "crossDomain": true,
+//   "url": "https://panel.apiwha.com/get_messages.php?apikey="+$scope.API_KEY+"&number="+$scope.mobileNumber,
+//   "method": "GET",
+//   "headers": {}
+// }
+
+// $.ajax(settings).done(function (response) {
+//   console.log(response);
+// });
   /** 
    * @author SSW
    * @description this function is used for getting whatsapp message
   */
   $scope.getMessage = function(){
     try{
-      $http.get($scope.API_END_POINT).then(function(res){
-        if(res){
-          console.log(res);
-          $scope.messages = res;
+      $http.get($scope.API_URL+"whatsAppMessages",null).then(
+        function(res){
+          if(res){
+            console.log(res);
+            $scope.messages = res.data;
+          }
+        },
+        function(error){
+          console.log(error);
         }
-      });
+      );
     }catch(error){
       console.error(error);
     }
   }
 
   $scope.init();
-});
+}]);
 
 
 app.controller("scanner", function($scope, $state,$stateParams,$http, $cordovaBarcodeScanner) {
@@ -221,7 +280,8 @@ app.controller("listCtrl",function($scope,$http,$state){
 })();*/
 
 
-app.config(function($stateProvider,$urlRouterProvider) {
+app.config(["$ionicConfigProvider","$stateProvider","$urlRouterProvider",function($ionicConfigProvider,$stateProvider,$urlRouterProvider) {
+  $ionicConfigProvider.tabs.position('bottom'); // other values: top
   var listState = {
     name: 'list',
     url: '/list',
@@ -252,7 +312,7 @@ app.config(function($stateProvider,$urlRouterProvider) {
 
   $urlRouterProvider.otherwise('/whatsapp');
 
-})
+}]);
 
 
 

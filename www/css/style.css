@@ -9,6 +9,26 @@
 .list-head th,.list-body tr{
     text-align: center;
 }
+.in-msg{
+    float: left;
+    color:black;
+    background: lightgray;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 400;
+    border-radius: 30px;
+    width: min-content;
+    padding: 0px 5% 0px 5%;
+}
+.out-msg{
+    float: right;
+    color:black;
+    background: lightgreen;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 400;
+    width: min-content;
+    padding: 0px 5% 0px 5%;
+    border-radius: 30px;
+}
 .list-body tr{
     cursor: pointer;
 }
@@ -20,6 +40,25 @@
     font-size:14px;
     font-weight: bold;
 }
+#footer {
+    position: relative;;
+    left:0px;
+    bottom:0px;
+    height:30px;
+    width:100%;
+    background:#999;
+ }
+
+ .padding0{
+     padding:0px !important;
+ }
+ .padding-l0{
+     padding-left:0px !important;
+ }
+ 
+ * html #footer {
+    position:absolute;
+ }
 .scan-area{
     margin-top:5% !important;
     width: 100%;
