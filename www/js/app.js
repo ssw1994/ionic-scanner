@@ -33,8 +33,8 @@ app.controller("whatsapp",["$scope","$state","$stateParams","$http",function($sc
   $scope.API_URL = "http://localhost:3001/notification/"
   $scope.API_END_POINT = "http://localhost:3001/notification/whatsAppMessages";//https://webhook.site/a03d2a0e-a57a-4625-b675-f830a1c02861/?apikey="+$scope.API_KEY+"&number="+$scope.mobileNumber;
   $scope.messages = [];
-  $scope.showAll = false;
-  $scope.showChat = true;
+  $scope.showAll = true;
+  $scope.showChat = false;
   $scope.showSetting = false;
   $scope.sender = {
     destination_number:"",
