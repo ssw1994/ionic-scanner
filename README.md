@@ -14,6 +14,7 @@ https://documentation.onesignal.com/docs/web-push-quickstart
 
 
 	Add push-notification.js file in your project and add below code in it
+
 document.addEventListener('deviceready', function () {
 // Enable to debug issues.
 // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
