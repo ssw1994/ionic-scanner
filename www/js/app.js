@@ -3,10 +3,10 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('starter', ['ionic','ngCordova']);
+var app = angular.module('starter', ['ionic', 'ngCordova']);
 
-app.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+app.run(function ($ionicPlatform) {
+  $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs).
     // The reason we default this to hidden is that native apps don't usually show an accessory bar, at
@@ -16,7 +16,17 @@ app.run(function($ionicPlatform) {
     if (window.cordova && window.Keyboard) {
       window.Keyboard.hideKeyboardAccessoryBar(true);
     }
-
+    // One Signal Push Notification Setup
+    // Enable to debug issues.
+    // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+    var notificationOpenedCallback = function (jsonData) {
+      console.log('didReceiveRemoteNotificationCallBack:' + JSON.stringify(jsonData));
+    };
+    setTimeout(function(){
+      window.plugins.OneSignal.init("385f5f63-1650-438f-bb71-422520dc58ec",{ googleProjectNumber: "ffhpushnotification-bde60" },notificationOpenedCallback);
+      window.plugins.OneSignal.enableInAppAlertNotification(true);
+    },2000);
+    
     if (window.StatusBar) {
       // Set the statusbar to use the default style, tweak this to
       // remove the status bar on iOS or change it to use white instead of dark colors.
@@ -25,7 +35,7 @@ app.run(function($ionicPlatform) {
   });
 });
 
-app.controller("whatsapp",["$scope","$state","$stateParams","$http",function($scope,$state,$stateParams,$http){
+app.controller("whatsapp", ["$scope", "$state", "$stateParams", "$http", function ($scope, $state, $stateParams, $http) {
 
 
   $scope.mobileNumber = 919403483605;
@@ -37,8 +47,8 @@ app.controller("whatsapp",["$scope","$state","$stateParams","$http",function($sc
   $scope.showChat = false;
   $scope.showSetting = false;
   $scope.sender = {
-    destination_number:"",
-    message:""
+    destination_number: "",
+    message: ""
   }
   $scope.message = "";
   $scope.destination_number = "";
@@ -48,74 +58,74 @@ app.controller("whatsapp",["$scope","$state","$stateParams","$http",function($sc
   */
 
 
-  $scope.sendMessage = function(){
-    try{
-      if($scope.sender.message && $scope.sender.destination_number){
+  $scope.sendMessage = function () {
+    try {
+      if ($scope.sender.message && $scope.sender.destination_number) {
         var param = {
-          API_KEY:$scope.API_KEY,
-          MOBILE_NUMBER:$scope.sender.destination_number,
-          TEXT_MEESAGE:$scope.sender.message
+          API_KEY: $scope.API_KEY,
+          MOBILE_NUMBER: $scope.sender.destination_number,
+          TEXT_MEESAGE: $scope.sender.message
         }
-        $http.post($scope.API_URL + "send",param,function(error,res){
-          if(error)
+        $http.post($scope.API_URL + "send", param, function (error, res) {
+          if (error)
             alert(error);
-          else{
+          else {
             console.log(res);
-            if(res.result_code == 0 && res.success){
+            if (res.result_code == 0 && res.success) {
               alert("Message sent successfully");
               $scope.sender = {
-                message:"",
-                destination_number:""
+                message: "",
+                destination_number: ""
               }
             }
           }
         });
-      }else{
+      } else {
         alert("Something missing");
       }
-      
-    }catch(error){
+
+    } catch (error) {
       console.error(error);
     }
   }
 
-  $scope.init = function(){
-    try{
+  $scope.init = function () {
+    try {
       $scope.getMessage();
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
 
-// var settings = {
-//   "async": true,
-//   "crossDomain": true,
-//   "url": "https://panel.apiwha.com/get_messages.php?apikey="+$scope.API_KEY+"&number="+$scope.mobileNumber,
-//   "method": "GET",
-//   "headers": {}
-// }
+  // var settings = {
+  //   "async": true,
+  //   "crossDomain": true,
+  //   "url": "https://panel.apiwha.com/get_messages.php?apikey="+$scope.API_KEY+"&number="+$scope.mobileNumber,
+  //   "method": "GET",
+  //   "headers": {}
+  // }
 
-// $.ajax(settings).done(function (response) {
-//   console.log(response);
-// });
+  // $.ajax(settings).done(function (response) {
+  //   console.log(response);
+  // });
   /** 
    * @author SSW
    * @description this function is used for getting whatsapp message
   */
-  $scope.getMessage = function(){
-    try{
-      $http.get($scope.API_URL+"whatsAppMessages",null).then(
-        function(res){
-          if(res){
+  $scope.getMessage = function () {
+    try {
+      $http.get($scope.API_URL + "whatsAppMessages", null).then(
+        function (res) {
+          if (res) {
             console.log(res);
             $scope.messages = res.data;
           }
         },
-        function(error){
+        function (error) {
           console.log(error);
         }
       );
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
@@ -124,79 +134,83 @@ app.controller("whatsapp",["$scope","$state","$stateParams","$http",function($sc
 }]);
 
 
-app.controller("scanner", function($scope, $state,$stateParams,$http, $cordovaBarcodeScanner) {
+app.controller("scanner", function ($scope, $state, $stateParams, $http, $cordovaBarcodeScanner) {
   $scope.codes = [];
   $scope.scannedcodes = "";
   $scope.productId = $stateParams.param && $stateParams.param.id ? $stateParams.param.id : null;
   console.log($scope.productId);
-  $scope.scanBarcode = function() {
-    try{
-      $cordovaBarcodeScanner.scan().then(function(imageData) {
+  $scope.scanBarcode = function () {
+    try {
+      $cordovaBarcodeScanner.scan().then(function (imageData) {
         $scope.codes = $scope.scannedcodes.split(",");
-        if(imageData && imageData.text){
+        if (imageData && imageData.text) {
           $scope.codes.push(imageData.text);
-          $scope.scannedcodes = $scope.codes.join(); 
+          $scope.scannedcodes = $scope.codes.join();
         }
-      }, function(error) {
+      }, function (error) {
         console.error(error);
       });
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   };
 
-  $scope.reset = function(){
-    try{
+  $scope.reset = function () {
+    try {
       $scope.scannedcodes = "";
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
 
-  $scope.saveBarcodes = function(codes){
-    try{
+  $scope.saveBarcodes = function (codes) {
+    try {
       var obj = {
-        productId:$scope.productId,
-        codes:codes
+        productId: $scope.productId,
+        codes: codes
       }
-      $http.put("https://sheltered-crag-25135.herokuapp.com/users/register",obj).then(function(response) {
+      $http.put("https://sheltered-crag-25135.herokuapp.com/users/register", obj).then(function (response) {
         console.log(response);
-        if(response){
-          $state.go("list").then(function(res){
+        if (response) {
+          $state.go("list").then(function (res) {
             $scope.reset();
           });
         }
       });
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
 })
 
-app.controller("listCtrl",function($scope,$http,$state){
+app.controller('dynamicFormController',function($scope,$http,$state){
+  
+});
+
+app.controller("listCtrl", function ($scope, $http, $state) {
   $scope.list = [];
-  $scope.init = function(){
+  $scope.init = function () {
     console.log("I am called");
-      $scope.getList();
+    $scope.getList();
   }
 
 
 
-  $scope.getList = function(){
-    try{
+  $scope.getList = function () {
+    try {
       $http.get("./js/list.json")
-      .then(function(response) {
+        .then(function (response) {
           console.log(response);
-          if(response)
+          if (response)
             $scope.list = response.data ? response.data : [];
-      });
-    }catch(error){
+        });
+    } catch (error) {
       console.error(error);
     }
   }
 
-  $scope.gotoScannerState = function(iObj){
-    $state.go("scan",{param:{id:iObj.productId}});
+  $scope.gotoScannerState = function (iObj) {
+    $state.go("scan", { param: { id: iObj.productId } });
   }
   $scope.init();
 })
@@ -280,37 +294,43 @@ app.controller("listCtrl",function($scope,$http,$state){
 })();*/
 
 
-app.config(["$ionicConfigProvider","$stateProvider","$urlRouterProvider",function($ionicConfigProvider,$stateProvider,$urlRouterProvider) {
+app.config(["$ionicConfigProvider", "$stateProvider", "$urlRouterProvider", function ($ionicConfigProvider, $stateProvider, $urlRouterProvider) {
   $ionicConfigProvider.tabs.position('bottom'); // other values: top
   var listState = {
     name: 'list',
     url: '/list',
     //template:"<list-Component></list-Component>"
     templateUrl: './template/list.html',
-    controller:'listCtrl'
+    controller: 'listCtrl'
   }
 
   var scannerState = {
     name: 'scan',
     url: '/scan/{param:json}',
     templateUrl: './template/barcodes.html',
-    params:{param:{productId:null}},
-    controller:"scanner"
+    params: { param: { productId: null } },
+    controller: "scanner"
   }
 
   var whatsappState = {
-    name:'whatsapp',
-    url:'/whatsapp',
-    templateUrl:"./template/whatsappview.html",
-    controller:"whatsapp"
+    name: 'whatsapp',
+    url: '/whatsapp',
+    templateUrl: "./template/whatsappview.html",
+    controller: "whatsapp"
+  }
+
+  var dynamicForm = {
+    name:'dynamicfrm',
+    url:'/dynamicfrm',
+    templateUrl:'./template/dynamicform.html',
+    controller:"dynamicFormController",
   }
 
   $stateProvider.state(listState);
   $stateProvider.state(scannerState);
   $stateProvider.state(whatsappState);
-
-
-  $urlRouterProvider.otherwise('/whatsapp');
+  $stateProvider.state(dynamicForm);
+  $urlRouterProvider.otherwise('/dynamicfrm');
 
 }]);
 
